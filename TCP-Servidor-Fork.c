@@ -6,6 +6,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <sys/types.h>		/* for wait() */
+#include <sys/wait.h>		/* for wait() */
 
 /*
  * Servidor TCP
@@ -71,6 +73,8 @@ int main(int argc, char **argv)
 	  exit(4);
     }
 
+    signal(SIGCHLD, SIG_IGN);
+
     while(1)
     {
 	  /*
@@ -134,7 +138,6 @@ int main(int argc, char **argv)
 		if (pid > 0)
 		{
 		    printf("Processo filho criado: %d\n", pid);
-
 		    /* Fecha o socket conectado ao cliente */
 		    close(ns);
 		}
